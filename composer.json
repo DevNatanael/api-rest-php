@@ -1,0 +1,17 @@
+{
+    "name": "natanael/web-store-php",
+    "description": "Loja php",
+    "type": "project",
+    "authors": [
+        {
+            "name": "natanael",
+            "email": "natanael.guedes@tijucaalimentos.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "core\\": "core/"
+        }
+    }
+}
