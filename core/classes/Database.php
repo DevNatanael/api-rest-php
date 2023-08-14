@@ -2,6 +2,7 @@
 
 namespace core\classes;
 
+use Exception;
 use PDO;
 use PDOException;
 
@@ -33,21 +34,24 @@ class Database
 
     public function select($sql, $parametros = null)
     {
+        if (!preg_match("/^SELECT/i", $sql)) {
+            throw new Exception('Base de dados não é uma instrução select');
+        }
+
         $this->conectar();
 
         $resultados = null;
 
         try {
-            if(!empty($parametros)){
+            if (!empty($parametros)) {
                 $executar = $this->conexao->prepare($sql);
                 $executar->execute($parametros);
                 $resultados = $executar->fetchAll(PDO::FETCH_CLASS);
-            }else{
+            } else {
                 $executar = $this->conexao->prepare($sql);
                 $executar->execute();
                 $resultados = $executar->fetchAll(PDO::FETCH_CLASS);
             }
-
         } catch (PDOException $e) {
             return false;
         }
@@ -56,4 +60,134 @@ class Database
 
         return $resultados;
     }
+
+
+    public function insert($sql, $parametros = null)
+    {
+        if (!preg_match("/^INSERT/i", $sql)) {
+            throw new Exception('Base de dados não é uma instrução INSERT');
+        }
+
+        $this->conectar();
+
+        try {
+            if (!empty($parametros)) {
+                $executar = $this->conexao->prepare($sql);
+                $executar->execute($parametros);
+            } else {
+                $executar = $this->conexao->prepare($sql);
+                $executar->execute();
+            }
+        } catch (PDOException $e) {
+            return array(
+                "status" => 500,
+                "msg" => $e->getMessage()
+            );
+        }
+
+        $this->desconectar();
+
+
+        return array(
+            "status" => 200,
+            "msg" => "Dados inseridos no banco"
+        );
+    }
+
+    public function update($sql, $parametros = null)
+    {
+        if (!preg_match("/^UPDATE/i", $sql)) {
+            throw new Exception('Base de dados não é uma instrução UPDATE');
+        }
+
+        $this->conectar();
+
+        try {
+            if (!empty($parametros)) {
+                $executar = $this->conexao->prepare($sql);
+                $executar->execute($parametros);
+            } else {
+                $executar = $this->conexao->prepare($sql);
+                $executar->execute();
+            }
+        } catch (PDOException $e) {
+            return array(
+                "status" => 500,
+                "msg" => $e->getMessage()
+            );
+        }
+
+        $this->desconectar();
+
+
+        return array(
+            "status" => 200,
+            "msg" => "Dados atualizados no banco"
+        );
+    }
+
+    public function delete($sql, $parametros = null)
+    {
+        if (!preg_match("/^DELETE/i", $sql)) {
+            throw new Exception('Base de dados não é uma instrução DELETE');
+        }
+
+        $this->conectar();
+
+        try {
+            if (!empty($parametros)) {
+                $executar = $this->conexao->prepare($sql);
+                $executar->execute($parametros);
+            } else {
+                $executar = $this->conexao->prepare($sql);
+                $executar->execute();
+            }
+        } catch (PDOException $e) {
+            return array(
+                "status" => 500,
+                "msg" => $e->getMessage()
+            );
+        }
+
+        $this->desconectar();
+
+
+        return array(
+            "status" => 200,
+            "msg" => "Dados apagados no banco"
+        );
+    }
+
+    public function statement($sql, $parametros = null)
+    {
+        if (preg_match("/^(SELECT|INSERT|UPDATE|DELETE)/i", $sql)) {
+            throw new Exception('Base de dados - instrução inválida');
+        }
+
+        $this->conectar();
+
+        try {
+            if (!empty($parametros)) {
+                $executar = $this->conexao->prepare($sql);
+                $executar->execute($parametros);
+            } else {
+                $executar = $this->conexao->prepare($sql);
+                $executar->execute();
+            }
+        } catch (PDOException $e) {
+            return array(
+                "status" => 500,
+                "msg" => $e->getMessage()
+            );
+        }
+
+        $this->desconectar();
+
+
+        return array(
+            "status" => 200,
+            "msg" => "Dados apagados no banco"
+        );
+    }
+
 }

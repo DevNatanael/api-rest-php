@@ -1,17 +1,18 @@
 <?php
 
-use core\classes\Database;
+use Core\Routes;
 
 session_start();
+require_once __DIR__ . '/vendor/autoload.php';
+
 require_once('./config.php');
-require_once('./vendor/autoload.php');
+require './core/Routes.php';
 
 
-$bd = new Database();
+// rotas
+$routes = new Routes();
+$routes->get("/test",  "controllers/clientes.php:getAll");
+//$routes->post("/", "controllers/clientes.php:postTest");
 
-$clientes = $bd->select("SELECT * FROM clientes");
-echo '<pre>';
-print_r($clientes);
 
-
-?>
+$routes->run();
