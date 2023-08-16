@@ -9,7 +9,7 @@ define('MYSQL_DATABASE',  'php_store');
 define('MYSQL_USER',      'root');
 define('MYSQL_PASS',      'toor');
 define('MYSQL_CHARSET',   'utf8');
-
+define('SECRET', 'Natan!2#@&ABC@&')
 
 
 

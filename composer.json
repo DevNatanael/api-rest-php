@@ -8,7 +8,9 @@
             "email": "natanael.guedes@tijucaalimentos.com"
         }
     ],
-    "require": {},
+    "require": {
+        "firebase/php-jwt": "^6.8"
+    },
     "autoload": {
         "psr-4": {
             "core\\": "core/"
