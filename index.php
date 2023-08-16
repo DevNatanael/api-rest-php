@@ -35,12 +35,15 @@ header('Content-Type: application/json');
 
 // <--
 
+
 // rotas
 $routes = new Routes();
-$routes->get("/test",  "controllers/clientes.php:getAll");
-//$routes->post("/", "controllers/clientes.php:postTest");
+
+$routes->post("/cadastro", "controllers/user/user.php:register");
+$routes->get("/getAll", "controllers/user/user.php:getAll");
 
 // middleware de autenticação
 $routes->use(new Auth());
+
 
 $routes->run();
