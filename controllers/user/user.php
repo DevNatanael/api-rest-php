@@ -94,17 +94,40 @@ function register($request, $response)
 function login($request, $response)
 {
     try {
+        $db = new Database();
 
         $data = [
             "email" => $request->body->email,
             "password" => $request->body->password
         ];
 
+        $parametros = [
+            ":email" => $data["email"],
+        ];
 
+        $checkUser = $db->select("SELECT * FROM usuarios WHERE email = :email", $parametros);
 
+        if (!$checkUser) {
+            return $response->json([
+                "status" => false,
+                "error" => "Usuário não encontrado"
+            ], 401);
+        }
 
+        $hashedPassword = $checkUser[0]->senha;
 
+        if (password_verify($data['password'], $hashedPassword)) {
+            return $response->json([
+                "status" => true,
+                "message" => "Login bem-sucedido"
+            ], 200);
 
+        } else {
+            return $response->json([
+                "status" => false,
+                "error" => "Senha incorreta"
+            ], 401);
+        }
     } catch (\Throwable $th) {
         return $response->json([
             "status" => false,
