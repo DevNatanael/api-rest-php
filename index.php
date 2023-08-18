@@ -42,6 +42,7 @@ $routes = new Routes();
 $routes->post("/cadastro", "controllers/user/user.php:register");
 $routes->get("/getAll", "controllers/user/user.php:getAll");
 $routes->post("/login", "controllers/user/user.php:login" );
+$routes->get("/csv", "controllers/test.php:generateCsv");
 
 // middleware de autenticação
 $routes->use(new Auth());
