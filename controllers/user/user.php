@@ -78,7 +78,6 @@ function register($request, $response)
             $parametros
         );
 
-
         return $response->json([
             "status" => true,
             "msg" => "Usuário cadastrado com sucesso"
@@ -117,9 +116,13 @@ function login($request, $response)
         $hashedPassword = $checkUser[0]->senha;
 
         if (password_verify($data['password'], $hashedPassword)) {
+            //gerando token
+            $token = generateToken($data['email']);
+
             return $response->json([
                 "status" => true,
-                "message" => "Login bem-sucedido"
+                "message" => "Login bem-sucedido",
+                "token" => $token
             ], 200);
 
         } else {
